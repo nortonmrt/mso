@@ -1,4 +1,4 @@
-%% Novamente o programa da treliça 2D
+%% Exemplo de programa para anÃ¡lise de treliÃ§a 2D
 % adaptado em 26/04/2021 por Norton Trennepohl
 clear;
 
@@ -8,17 +8,17 @@ C = E;
 
 L = [1;1]; %em m 
 
-A = [0.1;0.2]; %em m²
+A = [0.1;0.2]; %em mÂ²
 
-%% Construção da malha
-%coordenadas dos nós
+%% ConstruÃ§Ã£o da malha
+%coordenadas dos nÃ³s
 x1 = [0 0];
 x2 = [L(1)*cos(pi/4) L(1)*sin(pi/4)];
 x3 = [0,(L(1)+L(2))*sin(pi/4)];
 
 xy = [x1; x2; x3];
 
-%número de nós e número de elementos
+%nÃºmero de nÃ³s e nÃºmero de elementos
 number_nodes = size(xy,1);
 number_elements = number_nodes - 1;
 
@@ -63,7 +63,7 @@ for i=1%:number_elements
     K(eDof,eDof) = K(eDof,eDof) + KeG;
 end
 
-%% Condições de contorno
+%% CondiÃ§Ãµes de contorno
 fixedNodes = [1;3];
 
 fixedDof = [fixedNodes; fixedNodes + number_nodes];
@@ -73,10 +73,10 @@ force = zeros(nDof,1);
 
 force(2) = 5e9; force(5) = 3e9;
 
-%% Solução
+%% SoluÃ§Ã£o
 displacements = solution(nDof,fixedDof,K,force);
 
-%% Gráfico
+%% GrÃ¡fico
 scale = 1; %pode ser alterada posteriormente
 
 u_Dof = (1:number_nodes)';
@@ -93,7 +93,7 @@ plot(deformed_config(:,1),deformed_config(:,2));
 xlabel('x (m)'); %legenda em x
 ylabel('displacement: u (m)'); %legenda em y
 
-%% Tensão e deformação
+%% TensÃ£o e deformaÃ§Ã£o
 stress = zeros(number_elements,1);
 strain = zeros(number_elements,1);
 
@@ -130,18 +130,18 @@ for i=1:number_elements
     local_disp = Te * displacements(eDof_v,1);
     local_strain = B*local_disp;
     
-    %deformação
+    %deformaÃ§Ã£o
     strain(i,:) = local_strain;
     
-    %tensão
+    %tensÃ£o
     Ci = C(i,1);
     local_stress = Ci * local_strain;
     
     stress(i,:) = local_stress;
     
-    disp("Deformações:");
+    disp("DeformaÃ§Ãµes:");
     disp(strain);
-    disp("Tensões:");
+    disp("TensÃµes:");
     disp(stress);
 end
 
